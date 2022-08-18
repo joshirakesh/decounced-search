@@ -21,3 +21,8 @@ function getSearchResults(query) {
 		.then(res => console.log(res))
 		.catch(err => console.error(err));
 }
+
+
+document.getElementById('input').addEventListener('keyup', (event) => {
+	console.log(event);
+})
