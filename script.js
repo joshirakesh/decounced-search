@@ -8,9 +8,10 @@ setInterval(() => {
 
 
 
-function getSearchResults() {
+function getSearchResults(query) {
+	const encodedQueryStr = encodeURIComponent(query);
 
-	fetch('https://genius-song-lyrics1.p.rapidapi.com/search?q=Alan%20Walker', {
+	fetch(`https://genius-song-lyrics1.p.rapidapi.com/search?q=${encodedQueryStr}`, {
 		method: 'GET',
 		headers: {
 			'X-RapidAPI-Key': rapidApiKey,
