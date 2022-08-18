@@ -7,8 +7,7 @@ setInterval(() => {
 }, 1000)
 
 
-
-async function getSearchResults(query) {
+function getSearchResults(query) {
 	const encodedQueryStr = encodeURIComponent(query);
 
 	return fetch(`https://genius-song-lyrics1.p.rapidapi.com/search?q=${encodedQueryStr}`, {
@@ -21,15 +20,25 @@ async function getSearchResults(query) {
 		.catch(err => console.error(err));
 }
 
-async function Handler(event) {
+let Handler = function (event) {
 	const searchTerm = event.target.value;
 
 	if (searchTerm.length < 3) {
 		return;
 	}
-
-	const res = await getSearchResults(searchTerm);
-	console.log(res);
+	console.log("*** API Called ***");
+	return getSearchResults(searchTerm).then((res) => console.log(res));
 }
 
-document.getElementById('input').addEventListener('keyup', Handler);
+function getDebouncedFn(cb, limit) {
+	let timer
+	return function () {
+		let context = this,
+			arg = arguments;
+
+		if (timer) clearTimeout(timer);
+		timer = setTimeout(cb.bind(context, ...arg), limit);
+	};
+}
+
+document.getElementById('input').addEventListener('keyup', getDebouncedFn(Handler, 1000));
